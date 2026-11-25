@@ -51,3 +51,10 @@
 ;; (unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
+
+;; 20261008_SGC move org-roam-ui install from M-x menu to here
+(package! org-roam-ui)
+(package! olivetti)
+;; (package! org-gtd)
+;; (package! org-edna)
+(package! selected-window-accent-mode)

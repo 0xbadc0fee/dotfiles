@@ -6,8 +6,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-;; (setq user-full-name "John Doe"
-;;       user-mail-address "john@doe.com")
+(setq user-full-name "Silas Curfman"
+      user-mail-address "silas.curfman@stw-technic.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -21,9 +21,18 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "Source Code Pro" :size 16 :weight 'semi-light)
-     doom-variable-pitch-font (font-spec :family "Source Code Pro" :size 18))
+;; (setq doom-font (font-spec :family "Fira Code" :size 14 :weight 'semi-light)
+;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 16))
 ;;
+(setq doom-them 'doom-dracula)
+
+;; (setq doom-font (font-spec :family "Source Code Pro" :size 16 :weight 'normal :width 'condensed)
+;;       doom-variable-pitch-font (font-spec :family "Source Code Pro" :size 16))
+(setq doom-font (font-spec :family "Cascadia Code" :size 14 :weight 'normal :width 'ultra-condensed)
+      doom-variable-pitch-font (font-spec :family "Cascadia Code" :size 14))
+
+(setq doom-themes-enable-bold t
+      doom-themes-enable-italic t)
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
@@ -32,16 +41,36 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tokyo-night)
+;; (setq doom-theme 'doom-one)
+;; Specify both a dark and light theme, like so and Doom will choose which one
+;; to load based on your system light/dark setting:
+;;
+;;   (setq doom-theme '(doom-one   . doom-one-light))   ; (DARK . LIGHT)
+;;
+;; If you want more pro-active theme switching based on OS light/dark mode, look
+;; up the `auto-dark' package.
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type t)
+
+(setq window-divider-default-places t
+      window-divider-default-right-width 3
+      window-divider-default-bottom-width 3)
+
+(window-divider-mode 1)
+
+(custom-set-faces!
+  '(window-divider :foreground "black")
+  '(window-divider-first-pixel :foreground "black")
+  '(window-divider-last-pixel :foreground "black")
+  ;; For terminal (TTY) Emacs, which uses vertical-border instead:
+  '(vertical-border :foreground "white"))
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "C:/Users/silas.curfman/org/")
-
+;; (setq org-directory "~/org/gtd/"
+;;       org-roam-directory (file-truename "~/org/roam/"))
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -75,34 +104,19 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; (after! evil-escape
-;;   (setq evil-escape-key-sequence "kj"
-;;         evil-escape-unordered-key-sequence t))
+;; Additional Personal Configurations
 
-
-;; (after! org
-;;   (setq org-agenda-files '("C:/Users/silas.curfman/org/"
-;;                            "C:/Users/silas.curfman/org/gtd/"
-;;                            "C:/Users/silas.curfman/org/gtd/jira-projects/"
-;;                            "C:/Users/silas.curfman/org/gtd/projects/")))
-(after! org
-  (setq org-agenda-files
-        (if (eq system-type 'windows-nt)
-            ;; Windows Paths
-            '("C:/Users/silas.curfman/org/"
-            "C:/Users/silas.curfman/org/gtd/"
-            "C:/Users/silas.curfman/org/gtd/jira-projects/"
-            "C:/Users/silas.curfman/org/gtd/projects/")
-          ;; Linux Paths
-          '("~/org/"
-            "~/org/gtd/"
-            "~/org/gtd/jira-projects"
-            "~/org/gtd/projects"))))
-;; (after! org
-;;   (setq org-agenda-files
-;;         (directory-files-recursively "C:/Users/silas.curfman/org" "\\.org$")))
-
-(setq window-divider-default-places t
-      window-divider-default-bottom-width 1
-      window-divider-default-right-width 1)
-(window-divider-mode +1)
+;; SGC Customizations & Notes
+;; + use load! to bring in my custom agendafile paths and my agile style agenda settings
+;; + DO NOT use GTD packages such as trevoke org-gtd etc.  Just use vanilla agenda with my customizations and follow GTD principals in general.
+;; + org roam directory != org-directory, see above entry for both org-directory and org-roam path
+;; + Fleeting / Unsorted notes in GTD => ~/org/gtd/inbox.org (one file)
+;; + Fleeting / Unsorted notes in ROAM => ~/org/roam/daily/YYYY-MM-DD.org (new file for every day, process these like you would GTD inbox, then leave out of UI graph)
+(load! "+myagendafiles.el")
+(load! "+capture.el")
+(load! "+agile.el")
+(use-package! selected-window-accent-mode
+  :config
+  (setq selected-window-accent-fringe-thickness 6
+        selected-window-accent-custom-color "SystemButtonText")
+  (selected-window-accent-mode 1))
